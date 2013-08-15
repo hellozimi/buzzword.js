@@ -1,6 +1,7 @@
 
-var posts = require("./posts.js"),
-    install = require("./install");
+var posts = require("./posts"),
+    install = require("./install"),
+    error = require("./error");
 
 function bind(buzzword) {
     var app = buzzword.app;
@@ -19,7 +20,7 @@ function bind(buzzword) {
 
     // Feed
     app.get("/feed", posts.feed);
-    return;
+
     // Error
     app.get("*", error.fourofour);
 }
