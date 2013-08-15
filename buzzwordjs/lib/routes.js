@@ -16,10 +16,10 @@ function bind(buzzword) {
     // Posts
     app.get("/page/:page", posts.page);
     app.get("/post/:post", posts.post);
-    return;
+
     // Feed
     app.get("/feed", posts.feed);
-
+    return;
     // Error
     app.get("*", error.fourofour);
 }

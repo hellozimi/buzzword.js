@@ -3,6 +3,7 @@ var Mongo = require("./mongo"),
     install = require("./install"),
     fs = require("fs"),
     ejs = require("ejs"),
+    RSS = require('rss'),
     paginate = require("./paginate");
 
 /* Binds buzzword to lib */
@@ -21,7 +22,6 @@ function root(request, response) {
         renderItemsInTemplate(items, 0, null, null, request, response);
     });
 }
-
 exports.root = root;
 
 function post(request, response) {
@@ -53,8 +53,42 @@ function post(request, response) {
         });
     });
 }
-
 exports.post = post;
+
+function feed(request, response) {
+    var feed = new RSS({
+        title: 'Hiddencode',
+        description: '',
+        feed_url: 'http://www.hiddencode.me/feed',
+        site_url: 'http://hiddencode.me/',
+        image_url: 'http://hiddencode.me/icon.png',
+        author: 'Simon Andersson',
+        managingEditor: 'Simon Andersson',
+        webMaster: 'Simon Andersson',
+        copyright: '2013 Simon Andersson',
+        language: 'en',
+        pubDate: 'May 20, 2012 04:00:00 GMT',
+        ttl: '1'
+    });
+
+    postsForPage(-1, function(items) {
+        for (var i = 0, len = items.length; i < len; i++) {
+            console.log(i);
+            var item = items[i];
+            feed.item({
+                title:  item.title,
+                description: marked.parse(item.body.substr(0, 255)+"..."),
+                url: 'http://hiddencode.me/post/'+item.slug, // link to the item
+                author: 'Simon Andersson', // optional - defaults to feed author property
+                date: (item.timestamp*1000) // any format that js Date can parse.
+            });
+        }
+
+        response.end(feed.xml());
+    });
+}
+
+exports.feed = feed;
 
 function page(request, response, next) {
     function isInt(n) {
@@ -77,7 +111,6 @@ function page(request, response, next) {
         renderItemsInTemplate(items, page, null, null, request, response);
     });
 }
-
 exports.page = page;
 
 function postsForPage(page, callback) {
