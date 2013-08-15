@@ -3,6 +3,7 @@ var posts = require("./posts"),
     install = require("./install"),
     error = require("./error");
 
+
 function bind(buzzword) {
     var app = buzzword.app;
     

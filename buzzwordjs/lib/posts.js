@@ -73,7 +73,6 @@ function feed(request, response) {
 
     postsForPage(-1, function(items) {
         for (var i = 0, len = items.length; i < len; i++) {
-            console.log(i);
             var item = items[i];
             feed.item({
                 title:  item.title,
@@ -123,20 +122,30 @@ function postsForPage(page, callback) {
         perPage = 0;
         page = 20;
     }
-    var now = Math.round(new Date().getTime() / 1000);
     Mongo.db.collection("entries", function(err, collection) {
-        collection.find({
-            timestamp: { "$lt": now }, /* Support for forward publishing */
-            hidden: { "$exists": true, "$in": [false, null] } /* Only include not hidden files */
-        }).sort({timestamp:-1}).skip(page*perPage).limit(perPage).toArray(function(err, items) {
-            callback(items);
-        });
+        if (!err) {
+            var now = Math.round(new Date().getTime() / 1000);
+            collection.find({
+                timestamp: { "$lt": now }, /* Support for forward publishing */
+                hidden: { "$exists": true, "$in": [false, null] } /* Only include not hidden files */
+            }).sort({timestamp:-1}).skip(page*perPage).limit(perPage).toArray(function(err, items) {
+                callback(items);
+            });
+
+        }
+        else {
+            callback(null);
+        }
     });
 }
 
 function renderItemsInTemplate(items, page, title, image, request, response) {
 
     function generate(items, i, contents, cb) {
+        if (items === null || items.length === 0) {
+            cb('<div class="post post-regular"><div class="post-content"><center><h1>Sorry</h1><p>No content!</p></center></div></div>');
+            return;
+        }
         var post = items[i];
         if (typeof post !== 'object') {
             if (i > items.length) {

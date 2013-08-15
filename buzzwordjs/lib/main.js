@@ -44,6 +44,6 @@ Buzzword.prototype.init = function(express, app, options) {
             dropbox.bind(that);
         }
     });
-}
+};
 
 module.exports = new Buzzword();
