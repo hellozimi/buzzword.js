@@ -1,0 +1,46 @@
+<!--
+Post Documentation:
+
+post.title string (the title)
+post.body string (body text);
+post.date string (date with the following format: MMM Do YYYY, HH:mm)
+post.slug string (url save title)
+post.template string (selected template - default post-regular)
+post.timestamp int (unix timestamp)
+post.image string (url to image)
+post.comments bool (should have comments)
+
+-->
+
+<div class="post <%if (post.template === 'video'){%>post-video<%}else if (post.template === 'quote'){%>post-quote<%}else{%>post-regular<%}%>">
+    <div class="post-content">
+        
+    	<h1 class="post-title"><a href="/post/<%= post.slug %>" title="<%= post.title %>"><%= post.title %></a></h1>
+        <div class="post-meta">
+            <%if (post.template !== 'page'){%>
+                <%= post.date %>
+            <%}else{%>&nbsp;<%}%>
+        </div>
+    	<div class="post-body">
+            <%- post.body %>
+        </div>
+        
+        <%if(!isSingle){%>
+        <div class="comment-count">
+            <a href="/post/<%= post.slug %>#disqus_thread" data-disqus-identifier="<%= post.slug%>">0 Comment</a>
+        </div>
+        <%}%>
+    </div>
+</div>
+
+<%if (comments && isSingle) {%>
+<script>
+    var disqus_identifier = '<%= post.slug%>';
+</script>
+<div class="comments">
+    <div id="disqus_thread"></div>
+    
+    <noscript>Please enable JavaScript to view the <a href="http://disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript>
+    <a href="http://disqus.com" class="dsq-brlink">comments powered by <span class="logo-disqus">Disqus</span></a>
+</div>
+<%}%>

@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title></title>
+</head>
+<body>
+	<%if (error != undefined) {%>
+		<p><%= error %></p>
+	<%}%>
+	<form method="POST" action="/login">
+		<input type="password" name="password" placeholder="password" /> <br>
+		<input type="submit" value="Login!" />
+	</form>
+</body>
+</html>

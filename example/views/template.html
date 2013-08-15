@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Example blog<% if (title) {%> | <%= title %><%}%></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="/css/normalize.css">
+    <link rel="stylesheet" href="/css/default.css">
+    <link rel="stylesheet" href="/highlight/styles/docco.css">
+    <link href='http://fonts.googleapis.com/css?family=Vollkorn:400italic' rel='stylesheet' type='text/css'>
+    <link rel="alternate" type="application/rss+xml" title="Example RSS" href="/feed" />
+</head>
+<body>
+	<header <% if(image){%> style="background-image:url(<%= image%>);"<%}%>>
+        <a href="/" class="logo">
+            EXAMPLE BLOG
+        </a>   
+    </header>
+	<section class="container">
+        <!-- Content -->
+        <%- content %>
+
+        <!-- Pagination -->
+        <%if(pagination){%>
+        <section class="pagination"><%- pagination %></section>
+        <%}%>
+    </section>
+    
+    
+    <script type="text/javascript" src="http://code.jquery.com/jquery-2.0.0.min.js"></script>
+    <script src="/js/highlight.pack.js"></script>
+    <script type="text/javascript">
+        (function($) {
+            var allVideos = $("iframe[src^='http://www.youtube.com'],iframe[src^='//www.youtube.com']");
+
+            allVideos.each(function() {
+                $(this).data('aspectRatio', this.height / this.width).removeAttr('height').removeAttr('width');
+            });
+
+            $(window).resize(function() {
+                allVideos.each(function() {
+                    var newWidth = $(this).parent().width();
+                    var el = $(this);
+                    el.width(newWidth).height(newWidth * el.data('aspectRatio'));
+                });
+            }).resize();
+
+            
+            $(document).ready(function() {
+                $('pre code').each(function(i, e) {
+                    //hljs.highlightBlock(e);
+                    hljs.initHighlightingOnLoad();
+                });
+            });
+        })(jQuery);
+    </script>
+     <script type="text/javascript">
+        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+        var disqus_shortname = '<insert shortname>'; // required: replace example with your forum shortname
+
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function() {
+            var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
+            dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+            (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        })();
+    </script>
+    <script type="text/javascript">
+        /* * * CONFIGURATION VARIABLES: EDIT BEFORE PASTING INTO YOUR WEBPAGE * * */
+        var disqus_shortname = '<insert shortname>'; // required: replace example with your forum shortname
+
+        /* * * DON'T EDIT BELOW THIS LINE * * */
+        (function () {
+        var s = document.createElement('script'); s.async = true;
+        s.type = 'text/javascript';
+        s.src = 'http://' + disqus_shortname + '.disqus.com/count.js';
+        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
+        }());
+    </script>
+</body>
+</html>
