@@ -1,9 +1,11 @@
 var express = require("express"),
     app = express(),
-    buzzword = require("../buzzwordjs");
+    buzzword = require("../buzzwordjs"); // Include buzzword
 
+// Set up mongodb uri
 var mongouri = process.env.MONGOLAB_URI || "mongodb://localhost:27017/buzzwordjs";
 
+// App configuration
 app.configure(function() {
     app.use(express.logger());
     app.use(express.cookieParser());
@@ -14,6 +16,7 @@ app.configure(function() {
     app.use(express.static(__dirname + '/public'));
 });
 
+// initalize buzzword with options
 buzzword.init(express, app, {
     dropbox: {
         key: "3r8s00h1oo0l413",
