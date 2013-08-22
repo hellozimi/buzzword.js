@@ -24,7 +24,7 @@ function root(request, response) {
 }
 exports.root = root;
 
-function post(request, response) {
+function post(request, response, next) {
 
     install.refresh(request, response);
     var postSlug = request.params.post;
